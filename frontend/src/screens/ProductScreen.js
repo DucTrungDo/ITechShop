@@ -1,20 +1,22 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import {
-  Row,
-  Col,
-  Image,
-  ListGroup,
-  Card,
-  Button,
-  ListGroupItem,
-} from 'react-bootstrap'
+import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap'
 import Rating from '../components/Rating'
-import products from '../products'
+import axios from 'axios'
 
 const ProductScreen = () => {
+  const [product, setProduct] = useState([])
   const { id } = useParams()
-  const product = products.find((p) => p._id === id)
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const { data } = await axios.get(`/api/products/${id}`)
+
+      setProduct(data)
+    }
+
+    fetchProducts()
+  }, [id])
 
   return (
     <Fragment>
@@ -31,7 +33,9 @@ const ProductScreen = () => {
               <h2>{product.name}</h2>
             </ListGroup.Item>
             <ListGroup.Item>
-              <Rating value={product.rating} text={`${product.numReviews}`} />
+              {product.rating && (
+                <Rating value={product.rating} text={`${product.numReviews}`} />
+              )}
             </ListGroup.Item>
             <ListGroup.Item>Price: {product.price}</ListGroup.Item>
             <ListGroup.Item>Description: {product.description}</ListGroup.Item>
