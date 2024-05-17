@@ -7,12 +7,23 @@ import {
   productDetailsReducer,
 } from './reducers/productReducers'
 
+import { cartReducer } from './reducers/cartReducers'
+
 const reducer = combineReducers({
   productList: productListReducer,
   productDetails: productDetailsReducer,
+  cart: cartReducer,
 })
 
-const initialState = {}
+const cartItemsFromStorage = localStorage.getItem('cartItems_iTechShop')
+  ? JSON.parse(localStorage.getItem('cartItems_iTechShop'))
+  : []
+
+const initialState = {
+  cart: {
+    cartItems_iTechShop: cartItemsFromStorage,
+  },
+}
 
 const middleware = [thunk]
 
