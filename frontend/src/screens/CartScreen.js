@@ -12,7 +12,7 @@ const CartScreen = () => {
   const dispatch = useDispatch()
 
   const qty = loacation.search ? Number(loacation.search.split('=')[1]) : 1
-  const { cartItems_iTechShop } = useSelector((state) => state.cart)
+  const { cartItems } = useSelector((state) => state.cart)
 
   useEffect(() => {
     if (productId) {
@@ -31,13 +31,13 @@ const CartScreen = () => {
     <Row>
       <Col md={8}>
         <h1>Shopping Cart</h1>
-        {cartItems_iTechShop.length === 0 ? (
+        {cartItems.length === 0 ? (
           <Message>
             Your cart is empty. <Link to='/'>Go Back</Link>
           </Message>
         ) : (
           <ListGroup variant='flush'>
-            {cartItems_iTechShop.map((item) => (
+            {cartItems.map((item) => (
               <ListGroup.Item key={item.product}>
                 <Row>
                   <Col md={2}>
@@ -86,11 +86,11 @@ const CartScreen = () => {
             <ListGroup.Item>
               <h2>
                 Subtotal (
-                {cartItems_iTechShop.reduce((acc, item) => acc + item.qty, 0)})
+                {cartItems.reduce((acc, item) => acc + item.qty, 0)})
                 items
               </h2>
               $
-              {cartItems_iTechShop
+              {cartItems
                 .reduce((acc, item) => acc + item.qty * item.price, 0)
                 .toFixed(2)}
             </ListGroup.Item>
@@ -98,7 +98,7 @@ const CartScreen = () => {
               <Button
                 type='button'
                 className='btn-block'
-                disabled={cartItems_iTechShop.length === 0}
+                disabled={cartItems.length === 0}
                 onClick={checkoutHandler}
               >
                 Proceed To Checkout
