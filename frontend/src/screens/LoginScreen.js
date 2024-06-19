@@ -18,11 +18,14 @@ const LoginScreen = () => {
   const userLogin = useSelector((state) => state.userLogin)
   const { loading, error, userInfo } = userLogin
 
-  const redirect = location.search ? location.search.split('=')[1] : '/'
+  let redirect = location.search ? location.search.split('=')[1] : '/'
+  if (!redirect.startsWith('/')) {
+    redirect = `/${redirect}`
+  }
 
   useEffect(() => {
     if (userInfo) {
-      navigate(redirect)
+      navigate(redirect, { replace: true })
     }
   }, [navigate, userInfo, redirect])
 
