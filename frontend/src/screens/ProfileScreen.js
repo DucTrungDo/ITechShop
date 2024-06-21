@@ -39,7 +39,7 @@ const ProfileScreen = () => {
     } else {
       if (!user || !user.name || success) {
         dispatch({ type: USER_UPDATE_PROFILE_RESET })
-        dispatch(getUserDetails())
+        dispatch(getUserDetails('profile'))
         dispatch(listMyOrders())
       } else {
         setName(user.name)
