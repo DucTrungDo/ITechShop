@@ -10,7 +10,7 @@ import Loader from '../components/Loader'
 import {
   getOrderDetails,
   payOrder,
-  //   deliverOrder,
+  deliverOrder,
 } from '../actions/orderActions'
 import {
   ORDER_PAY_RESET,
@@ -31,8 +31,8 @@ const OrderScreen = () => {
   const orderPay = useSelector((state) => state.orderPay)
   const { loading: loadingPay, success: successPay } = orderPay
 
-  //   const orderDeliver = useSelector((state) => state.orderDeliver)
-  //   const { loading: loadingDeliver, success: successDeliver } = orderDeliver
+  const orderDeliver = useSelector((state) => state.orderDeliver)
+  const { loading: loadingDeliver, success: successDeliver } = orderDeliver
 
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
@@ -65,8 +65,7 @@ const OrderScreen = () => {
       document.body.appendChild(script)
     }
 
-    if (!order || successPay || order._id !== id) {
-      // if (!order || successPay || successDeliver || order._id !== id) {
+    if (!order || successPay || successDeliver || order._id !== id) {
       dispatch({ type: ORDER_PAY_RESET })
       dispatch({ type: ORDER_DELIVER_RESET })
       dispatch(getOrderDetails(id))
@@ -77,17 +76,16 @@ const OrderScreen = () => {
         setSdkReady(true)
       }
     }
-    //   }, [dispatch, id, successPay, successDeliver, order])
-  }, [dispatch, id, successPay, order])
+  }, [dispatch, id, successPay, successDeliver, order])
 
   const successPaymentHandler = (paymentResult) => {
     console.log(paymentResult)
     dispatch(payOrder(id, paymentResult))
   }
 
-  //   const deliverHandler = () => {
-  //     dispatch(deliverOrder(order))
-  //   }
+  const deliverHandler = () => {
+    dispatch(deliverOrder(order))
+  }
 
   return loading ? (
     <Loader />
@@ -212,7 +210,7 @@ const OrderScreen = () => {
                   )}
                 </ListGroup.Item>
               )}
-              {/* {loadingDeliver && <Loader />}
+              {loadingDeliver && <Loader />}
               {userInfo &&
                 userInfo.isAdmin &&
                 order.isPaid &&
@@ -226,7 +224,7 @@ const OrderScreen = () => {
                       Mark As Delivered
                     </Button>
                   </ListGroup.Item>
-                )} */}
+                )}
             </ListGroup>
           </Card>
         </Col>
